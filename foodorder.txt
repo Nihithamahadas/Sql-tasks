@@ -1,0 +1,510 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.30-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use  onlinefoodordering;
+Database changed
+mysql> create table Restaurants(restaurantid int primary key,restauarntname varchar(29),restaurantaddr varchar(30),contactno int);
+Query OK, 0 rows affected (0.83 sec)
+
+mysql> alter table Restaurants modify restaurantid int AUTO_INCREMENT;
+Query OK, 0 rows affected (3.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table Rmenuitems(menuid int primary key, restid int,menuname varchar(10),menutype varchar(10),menucategory varchar(10),menuprice float,menudesc text);
+Query OK, 0 rows affected (0.56 sec)
+
+mysql> alter table Rmenuitems add foreign key(restid) references Restaurants(restaurantid);
+Query OK, 0 rows affected (1.53 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>  create table customers(customerid int primary key,customername varchar(10),customericty varchar(10),customerdob date,customergender varchar(6) DEFAULT ' male',customerpassword varchar(13));
+Query OK, 0 rows affected (0.61 sec)
+
+mysql> CREATE TABLE orders(orderid int primary key,customid int,orderdate date,delievryaddr varchar(10),orderstatus varchar(10));
+ERROR 1050 (42S01): Table 'orders' already exists
+mysql> CREATE TABLE orderss(orderid int primary key,customid int,orderdate date,delievryaddr varchar(10),orderstatus varchar(10));
+Query OK, 0 rows affected (0.56 sec)
+
+mysql> alter table orderss add foreign key(customid) references customers(customerid);
+Query OK, 0 rows affected (1.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> create table ordermenus(orderids int,menuid int,menuqty int,menuprice float);
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> alter table ordermenus add foreign key(orderids) references orders(orderid);
+Query OK, 0 rows affected (0.95 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc Restaurants;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| restaurantid   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| restauarntname | varchar(29) | YES  |     | NULL    |                |
+| restaurantaddr | varchar(30) | YES  |     | NULL    |                |
+| contactno      | int(11)     | YES  |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.15 sec)
+
+mysql>  desc Rmenuitems;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| menuid       | int(11)     | NO   | PRI | NULL    |       |
+| restid       | int(11)     | YES  | MUL | NULL    |       |
+| menuname     | varchar(10) | YES  |     | NULL    |       |
+| menutype     | varchar(10) | YES  |     | NULL    |       |
+| menucategory | varchar(10) | YES  |     | NULL    |       |
+| menuprice    | float       | YES  |     | NULL    |       |
+| menudesc     | text        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> desc CUSTOMERS;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| customerid       | int(11)     | NO   | PRI | NULL    |       |
+| customername     | varchar(10) | YES  |     | NULL    |       |
+| customericty     | varchar(10) | YES  |     | NULL    |       |
+| customerdob      | date        | YES  |     | NULL    |       |
+| customergender   | varchar(6)  | YES  |     |  male   |       |
+| customerpassword | varchar(13) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> desc Restaurants;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| restaurantid   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| restauarntname | varchar(29) | YES  |     | NULL    |                |
+| restaurantaddr | varchar(30) | YES  |     | NULL    |                |
+| contactno      | int(11)     | YES  |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Restaurants values(1,'a','ind',12345);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> ^C
+mysql> insert into Restaurants(restauarntname,restaurantaddr,contactno) values('b','ind',1125);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> insert into Restaurants(restauarntname,restaurantaddr,contactno) values('c','ind',1901);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Restaurants(restauarntname,restaurantaddr,contactno) values('d','ind',1902);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into Restaurants(restauarntname,restaurantaddr,contactno) values('ed','ind',1903);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Restaurants(restauarntname,restaurantaddr,contactno) values('f','ind',1904);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select *from Restaurants;
++--------------+----------------+----------------+-----------+
+| restaurantid | restauarntname | restaurantaddr | contactno |
++--------------+----------------+----------------+-----------+
+|            1 | a              | ind            |     12345 |
+|            2 | b              | ind            |      1125 |
+|            3 | c              | ind            |      1901 |
+|            4 | d              | ind            |      1902 |
+|            5 | ed             | ind            |      1903 |
+|            6 | f              | ind            |      1904 |
++--------------+----------------+----------------+-----------+
+6 rows in set (0.02 sec)
+
+mysql> desc Rmenuitems;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| menuid       | int(11)     | NO   | PRI | NULL    |       |
+| restid       | int(11)     | YES  | MUL | NULL    |       |
+| menuname     | varchar(10) | YES  |     | NULL    |       |
+| menutype     | varchar(10) | YES  |     | NULL    |       |
+| menucategory | varchar(10) | YES  |     | NULL    |       |
+| menuprice    | float       | YES  |     | NULL    |       |
+| menudesc     | text        | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Rmenuitems (menuid,restid,menuname,menutype,menucategory,menuprice,menudesc)  values(1,1,'spl','veg','adl',600,'pure veg');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into Rmenuitems (menuid,restid,menuname,menutype,menucategory,menuprice,menudesc)  values(2,2,'spl','veg','adl',600,'pure veg');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Rmenuitems (menuid,restid,menuname,menutype,menucategory,menuprice,menudesc)  values(3,3,'spl','veg','nadl',900,'pure veg');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into Rmenuitems (menuid,restid,menuname,menutype,menucategory,menuprice,menudesc)  values(4,4,'ordspl','nonveg','intopll',900,'non veg');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into Rmenuitems (menuid,restid,menuname,menutype,menucategory,menuprice,menudesc)  values(5,5,'ordspl','nonveg','intopll',9100,'non veg');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select *from Rmenuitems;
++--------+--------+----------+----------+--------------+-----------+----------+
+| menuid | restid | menuname | menutype | menucategory | menuprice | menudesc |
++--------+--------+----------+----------+--------------+-----------+----------+
+|      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
++--------+--------+----------+----------+--------------+-----------+----------+
+5 rows in set (0.05 sec)
+
+mysql> show tables;
++------------------------------+
+| Tables_in_onlinefoodordering |
++------------------------------+
+| customers                    |
+| ordermenus                   |
+| orders                       |
+| orderss                      |
+| restaurants                  |
+| rmenuitems                   |
++------------------------------+
+6 rows in set (0.19 sec)
+
+mysql> desc restaurants;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| restaurantid   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| restauarntname | varchar(29) | YES  |     | NULL    |                |
+| restaurantaddr | varchar(30) | YES  |     | NULL    |                |
+| contactno      | int(11)     | YES  |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from restaurants where restaurantaddr='ind';
++--------------+----------------+----------------+-----------+
+| restaurantid | restauarntname | restaurantaddr | contactno |
++--------------+----------------+----------------+-----------+
+|            1 | a              | ind            |     12345 |
+|            2 | b              | ind            |      1125 |
+|            3 | c              | ind            |      1901 |
+|            4 | d              | ind            |      1902 |
+|            5 | ed             | ind            |      1903 |
+|            6 | f              | ind            |      1904 |
++--------------+----------------+----------------+-----------+
+6 rows in set (0.10 sec)
+
+mysql> select * from restaurants,ordermenus;
+Empty set (0.05 sec)
+
+mysql> select * from orders;
+Empty set (0.01 sec)
+
+mysql> select * from ordermenus;
+Empty set (0.00 sec)
+
+mysql>  select * from rmenuitems;
++--------+--------+----------+----------+--------------+-----------+----------+
+| menuid | restid | menuname | menutype | menucategory | menuprice | menudesc |
++--------+--------+----------+----------+--------------+-----------+----------+
+|      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
++--------+--------+----------+----------+--------------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql>  desc customers;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| customerid       | int(11)     | NO   | PRI | NULL    |       |
+| customername     | varchar(10) | YES  |     | NULL    |       |
+| customericty     | varchar(10) | YES  |     | NULL    |       |
+| customerdob      | date        | YES  |     | NULL    |       |
+| customergender   | varchar(6)  | YES  |     |  male   |       |
+| customerpassword | varchar(13) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+
+mysql> insert into customers (customerid,customername,customericty,customerdob,customergender,customerpassword) values(100,'e','uk','1990-10-22','male','eoi');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into customers (customerid,customername,customericty,customerdob,customergender,customerpassword) values(110,'ef','uae','1990-11-22','male','etoi');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into customers (customerid,customername,customericty,customerdob,customergender,customerpassword) values(210,'egf','usa','1991-11-22','female','ndiai');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into customers (customerid,customername,customericty,customerdob,customergender,customerpassword) values(211,'egfh','ind','1993-11-22','female','india');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into customers (customerid,customername,customericty,customerdob,customergender,customerpassword) values(209,'egfi','ind','1994-11-22','female','india');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select *from customers;
++------------+--------------+--------------+-------------+----------------+------------------+
+| customerid | customername | customericty | customerdob | customergender | customerpassword |
++------------+--------------+--------------+-------------+----------------+------------------+
+|        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|        211 | egfh         | ind          | 1993-11-22  | female         | india            |
++------------+--------------+--------------+-------------+----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> desc orders;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| orderid      | int(11)     | NO   | PRI | NULL    |       |
+| customid     | int(11)     | YES  |     | NULL    |       |
+| orderdate    | date        | YES  |     | NULL    |       |
+| delievryaddr | varchar(10) | YES  |     | NULL    |       |
+| orderstatus  | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> show tables;
++------------------------------+
+| Tables_in_onlinefoodordering |
++------------------------------+
+| customers                    |
+| ordermenus                   |
+| orders                       |
+| orderss                      |
+| restaurants                  |
+| rmenuitems                   |
++------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from orders;
+Empty set (0.00 sec)
+
+mysql> show tables;
++------------------------------+
+| Tables_in_onlinefoodordering |
++------------------------------+
+| customers                    |
+| ordermenus                   |
+| orders                       |
+| orderss                      |
+| restaurants                  |
+| rmenuitems                   |
++------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from customers;
++------------+--------------+--------------+-------------+----------------+------------------+
+| customerid | customername | customericty | customerdob | customergender | customerpassword |
++------------+--------------+--------------+-------------+----------------+------------------+
+|        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|        211 | egfh         | ind          | 1993-11-22  | female         | india            |
++------------+--------------+--------------+-------------+----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select *from ordermenus;
+Empty set (0.00 sec)
+
+mysql>  desc ordermenus;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| orderids  | int(11) | YES  | MUL | NULL    |       |
+| menuid    | int(11) | YES  |     | NULL    |       |
+| menuqty   | int(11) | YES  |     | NULL    |       |
+| menuprice | float   | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc orders;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| orderid      | int(11)     | NO   | PRI | NULL    |       |
+| customid     | int(11)     | YES  |     | NULL    |       |
+| orderdate    | date        | YES  |     | NULL    |       |
+| delievryaddr | varchar(10) | YES  |     | NULL    |       |
+| orderstatus  | varchar(10) | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> select *from customers;
++------------+--------------+--------------+-------------+----------------+------------------+
+| customerid | customername | customericty | customerdob | customergender | customerpassword |
++------------+--------------+--------------+-------------+----------------+------------------+
+|        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|        211 | egfh         | ind          | 1993-11-22  | female         | india            |
++------------+--------------+--------------+-------------+----------------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into orders values(1,100,'2020-11-23','uk','done');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into orders values(21,110,'2020-11-13','uk','done');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into orders values(23,209,'2020-11-10','uae','done');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into orders values(43,210,'2020-11-22','uae','done');
+Query OK, 1 row affected (0.07 sec)
+
+mysql>  insert into orders values(42,211,'2020-11-22','uae','done');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select *from orders;
++---------+----------+------------+--------------+-------------+
+| orderid | customid | orderdate  | delievryaddr | orderstatus |
++---------+----------+------------+--------------+-------------+
+|       1 |      100 | 2020-11-23 | uk           | done        |
+|      21 |      110 | 2020-11-13 | uk           | done        |
+|      23 |      209 | 2020-11-10 | uae          | done        |
+|      42 |      211 | 2020-11-22 | uae          | done        |
+|      43 |      210 | 2020-11-22 | uae          | done        |
++---------+----------+------------+--------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> desc ordermenus;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| orderids  | int(11) | YES  | MUL | NULL    |       |
+| menuid    | int(11) | YES  |     | NULL    |       |
+| menuqty   | int(11) | YES  |     | NULL    |       |
+| menuprice | float   | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql>  select *from ordermenus;
+Empty set (0.00 sec)
+
+mysql> insert into ordermenus values(1,1,2,600);
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into ordermenus values(21,2,2,600);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select *from Rmenuitems;
++--------+--------+----------+----------+--------------+-----------+----------+
+| menuid | restid | menuname | menutype | menucategory | menuprice | menudesc |
++--------+--------+----------+----------+--------------+-----------+----------+
+|      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
++--------+--------+----------+----------+--------------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into ordermenus values(23,3,2,1600);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into ordermenus values(43,4,2,1000);
+Query OK, 1 row affected (0.06 sec)
+
+mysql>  insert into ordermenus values(42,5,3,5000);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select *from ordermenus;
++----------+--------+---------+-----------+
+| orderids | menuid | menuqty | menuprice |
++----------+--------+---------+-----------+
+|        1 |      1 |       2 |       600 |
+|       21 |      2 |       2 |       600 |
+|       23 |      3 |       2 |      1600 |
+|       43 |      4 |       2 |      1000 |
+|       42 |      5 |       3 |      5000 |
++----------+--------+---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select *from Restaurants join Rmenuitems;
++--------------+----------------+----------------+-----------+--------+--------+----------+----------+--------------+-----------+----------+
+| restaurantid | restauarntname | restaurantaddr | contactno | menuid | restid | menuname | menutype | menucategory | menuprice | menudesc |
++--------------+----------------+----------------+-----------+--------+--------+----------+----------+--------------+-----------+----------+
+|            1 | a              | ind            |     12345 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            1 | a              | ind            |     12345 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            1 | a              | ind            |     12345 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            1 | a              | ind            |     12345 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            1 | a              | ind            |     12345 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
+|            2 | b              | ind            |      1125 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            2 | b              | ind            |      1125 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            2 | b              | ind            |      1125 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            2 | b              | ind            |      1125 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            2 | b              | ind            |      1125 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
+|            3 | c              | ind            |      1901 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            3 | c              | ind            |      1901 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            3 | c              | ind            |      1901 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            3 | c              | ind            |      1901 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            3 | c              | ind            |      1901 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
+|            4 | d              | ind            |      1902 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            4 | d              | ind            |      1902 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            4 | d              | ind            |      1902 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            4 | d              | ind            |      1902 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            4 | d              | ind            |      1902 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
+|            5 | ed             | ind            |      1903 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            5 | ed             | ind            |      1903 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            5 | ed             | ind            |      1903 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            5 | ed             | ind            |      1903 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            5 | ed             | ind            |      1903 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
+|            6 | f              | ind            |      1904 |      1 |      1 | spl      | veg      | adl          |       600 | pure veg |
+|            6 | f              | ind            |      1904 |      2 |      2 | spl      | veg      | adl          |       600 | pure veg |
+|            6 | f              | ind            |      1904 |      3 |      3 | spl      | veg      | nadl         |       900 | pure veg |
+|            6 | f              | ind            |      1904 |      4 |      4 | ordspl   | nonveg   | intopll      |       900 | non veg  |
+|            6 | f              | ind            |      1904 |      5 |      5 | ordspl   | nonveg   | intopll      |      9100 | non veg  |
++--------------+----------------+----------------+-----------+--------+--------+----------+----------+--------------+-----------+----------+
+30 rows in set (0.06 sec)
+
+mysql> select *from orders join customers;
++---------+----------+------------+--------------+-------------+------------+--------------+--------------+-------------+----------------+------------------+
+| orderid | customid | orderdate  | delievryaddr | orderstatus | customerid | customername | customericty | customerdob | customergender | customerpassword |
++---------+----------+------------+--------------+-------------+------------+--------------+--------------+-------------+----------------+------------------+
+|       1 |      100 | 2020-11-23 | uk           | done        |        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|      21 |      110 | 2020-11-13 | uk           | done        |        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|      23 |      209 | 2020-11-10 | uae          | done        |        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|      42 |      211 | 2020-11-22 | uae          | done        |        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|      43 |      210 | 2020-11-22 | uae          | done        |        100 | e            | uk           | 1990-10-22  | male           | eoi              |
+|       1 |      100 | 2020-11-23 | uk           | done        |        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|      21 |      110 | 2020-11-13 | uk           | done        |        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|      23 |      209 | 2020-11-10 | uae          | done        |        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|      42 |      211 | 2020-11-22 | uae          | done        |        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|      43 |      210 | 2020-11-22 | uae          | done        |        110 | ef           | uae          | 1990-11-22  | male           | etoi             |
+|       1 |      100 | 2020-11-23 | uk           | done        |        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|      21 |      110 | 2020-11-13 | uk           | done        |        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|      23 |      209 | 2020-11-10 | uae          | done        |        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|      42 |      211 | 2020-11-22 | uae          | done        |        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|      43 |      210 | 2020-11-22 | uae          | done        |        209 | egfi         | ind          | 1994-11-22  | female         | india            |
+|       1 |      100 | 2020-11-23 | uk           | done        |        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|      21 |      110 | 2020-11-13 | uk           | done        |        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|      23 |      209 | 2020-11-10 | uae          | done        |        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|      42 |      211 | 2020-11-22 | uae          | done        |        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|      43 |      210 | 2020-11-22 | uae          | done        |        210 | egf          | usa          | 1991-11-22  | female         | ndiai            |
+|       1 |      100 | 2020-11-23 | uk           | done        |        211 | egfh         | ind          | 1993-11-22  | female         | india            |
+|      21 |      110 | 2020-11-13 | uk           | done        |        211 | egfh         | ind          | 1993-11-22  | female         | india            |
+|      23 |      209 | 2020-11-10 | uae          | done        |        211 | egfh         | ind          | 1993-11-22  | female         | india            |
+|      42 |      211 | 2020-11-22 | uae          | done        |        211 | egfh         | ind          | 1993-11-22  | female         | india            |
+|      43 |      210 | 2020-11-22 | uae          | done        |        211 | egfh         | ind          | 1993-11-22  | female         | india            |
++---------+----------+------------+--------------+-------------+------------+--------------+--------------+-------------+----------------+------------------+
+25 rows in set (0.00 sec)
+
+mysql>

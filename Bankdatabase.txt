@@ -1,0 +1,322 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 5.7\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.30-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use nihitha;
+Database changed
+mysql> create table CustomerInfo(customerid int primary key,customername varchar(20),
+    -> customercity varchar(20),customeraddress varchar(20),customermobile int unique,pan int unique,
+    -> customerpwd varchar(10));
+Query OK, 0 rows affected (1.10 sec)
+
+mysql> create table AccountInfo(Accountid int primary key,customerid int,accounttype varchar(10),
+    -> accountbalance float,Accountopendate date,accountstatus varchar(10),foreign key(customerid) references CustomerInfo(customerid));
+Query OK, 0 rows affected (0.39 sec)
+
+mysql> create table TransactionInfo(transactionid int primary key,accountid int,transactiontype varchar(5),
+    -> amount float,transactiondate date,foreign key(accountid) references AccountInfo(Accountid));
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> desc Customer;
+ERROR 1146 (42S02): Table 'nihitha.customer' doesn't exist
+mysql> desc CustomerInfo;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| customerid      | int(11)     | NO   | PRI | NULL    |       |
+| customername    | varchar(20) | YES  |     | NULL    |       |
+| customercity    | varchar(20) | YES  |     | NULL    |       |
+| customeraddress | varchar(20) | YES  |     | NULL    |       |
+| customermobile  | int(11)     | YES  | UNI | NULL    |       |
+| pan             | int(11)     | YES  | UNI | NULL    |       |
+| customerpwd     | varchar(10) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+7 rows in set (0.07 sec)
+
+mysql> desc AccountInfo;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| Accountid       | int(11)     | NO   | PRI | NULL    |       |
+| customerid      | int(11)     | YES  | MUL | NULL    |       |
+| accounttype     | varchar(10) | YES  |     | NULL    |       |
+| accountbalance  | float       | YES  |     | NULL    |       |
+| Accountopendate | date        | YES  |     | NULL    |       |
+| accountstatus   | varchar(10) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.05 sec)
+
+mysql> desc TransactionInfo;
++-----------------+------------+------+-----+---------+-------+
+| Field           | Type       | Null | Key | Default | Extra |
++-----------------+------------+------+-----+---------+-------+
+| transactionid   | int(11)    | NO   | PRI | NULL    |       |
+| accountid       | int(11)    | YES  | MUL | NULL    |       |
+| transactiontype | varchar(5) | YES  |     | NULL    |       |
+| amount          | float      | YES  |     | NULL    |       |
+| transactiondate | date       | YES  |     | NULL    |       |
++-----------------+------------+------+-----+---------+-------+
+5 rows in set (0.05 sec)
+
+mysql> alter table AccountInfo modify accountstatus varchar(10) check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked')' at line 1
+mysql> alter table AccountInfo modify accountstatus varchar(10) check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked')' at line 1
+mysql> create table TransactionInfo(transactionid int primary key,accountid int,transactiontype varchar(5),
+    -> amount float,transactiondate date,foreign key(accountid) references AccountInfo(Accountid));
+ERROR 1050 (42S01): Table 'transactioninfo' already exists
+mysql> alter table AccountInfo modify accountstatus varchar(10) check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked')' at line 1
+mysql> alter table AccountInfo add check (accountstatus='open' or accountstatus='closed' or accountstatus='blocked');
+Query OK, 0 rows affected (0.41 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from CustomerInfo;
+Empty set (0.11 sec)
+
+mysql> select * from AccountInfo;
+Empty set (0.00 sec)
+
+mysql> select * from TransactionInfo;
+Empty set (0.00 sec)
+
+mysql> alter table AccountInfo modify accountstatus varchar(10) add check(accountstatus='open' or accountstatus='closed' or accountstatus='blocked');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add check(accountstatus='open' or accountstatus='closed' or accountstatus='block' at line 1
+mysql> insert into CustomerInfo values(1,'ak','atp','a nagar',963258,563214,'helloworld');
+Query OK, 1 row affected (0.27 sec)
+
+mysql> insert into CustomerInfo values(2,'bk','ptp','b nagar',983258,663214,'helloworld');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into CustomerInfo values(3,'ck','ctp','c nagar',973258,763214,'kittyworld');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into CustomerInfo values(4,'dk','dtp','d nagar',923258,963214,'donworld');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into CustomerInfo values(5,'ek','etp','e nagar',763258,653214,'ekworld');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into CustomerInfo values(6,'fk','ftp','f nagar',993258,523214,'fkworld');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into CustomerInfo values(7,'gk','gtp','g nagar',863258,363214,'gkworld');
+Query OK, 1 row affected (0.23 sec)
+
+mysql> insert into CustomerInfo values(8,'hk','htp','h nagar',763858,663514,'hkworld');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into CustomerInfo values(9,'ik','htp','h nagar',763558,663534,'ikworld');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into CustomerInfo values(10,'jk','htp','j nagar',693858,663569,'jkworld');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from CustomerInfo;
++------------+--------------+--------------+-----------------+----------------+--------+-------------+
+| customerid | customername | customercity | customeraddress | customermobile | pan    | customerpwd |
++------------+--------------+--------------+-----------------+----------------+--------+-------------+
+|          1 | ak           | atp          | a nagar         |         963258 | 563214 | helloworld  |
+|          2 | bk           | ptp          | b nagar         |         983258 | 663214 | helloworld  |
+|          3 | ck           | ctp          | c nagar         |         973258 | 763214 | kittyworld  |
+|          4 | dk           | dtp          | d nagar         |         923258 | 963214 | donworld    |
+|          5 | ek           | etp          | e nagar         |         763258 | 653214 | ekworld     |
+|          6 | fk           | ftp          | f nagar         |         993258 | 523214 | fkworld     |
+|          7 | gk           | gtp          | g nagar         |         863258 | 363214 | gkworld     |
+|          8 | hk           | htp          | h nagar         |         763858 | 663514 | hkworld     |
+|          9 | ik           | htp          | h nagar         |         763558 | 663534 | ikworld     |
+|         10 | jk           | htp          | j nagar         |         693858 | 663569 | jkworld     |
++------------+--------------+--------------+-----------------+----------------+--------+-------------+
+10 rows in set (0.01 sec)
+
+mysql> insert into AccountInfo values(123,1,'savings',23695.3,'2020-06-06','open');
+Query OK, 1 row affected (0.13 sec)
+
+mysql> insert into AccountInfo values(124,2,'current',33695.3,'2020-07-06','blocked');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into AccountInfo values(125,3,'savings',236954.3,'2020-06-07','closed');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into AccountInfo values(126,4,'current',6954.3,'2020-05-07','open');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into AccountInfo values(127,5,'current',16954.3,'2020-03-07','blocked');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into AccountInfo values(128,6,'savings',36954.3,'2020-05-27','open');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into AccountInfo values(129,7,'current',69554.3,'2020-08-07','open');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into AccountInfo values(130,8,'current',12540.3,'2020-11-07','closed');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into AccountInfo values(131,9,'savings',89614.3,'2020-04-11','open');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into AccountInfo values(132,10,'savings',12367.3,'2020-09-17','blocked');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> select * from AccountInfo;
++-----------+------------+-------------+----------------+-----------------+---------------+
+| Accountid | customerid | accounttype | accountbalance | Accountopendate | accountstatus |
++-----------+------------+-------------+----------------+-----------------+---------------+
+|       123 |          1 | savings     |        23695.3 | 2020-06-06      | open          |
+|       124 |          2 | current     |        33695.3 | 2020-07-06      | blocked       |
+|       125 |          3 | savings     |         236954 | 2020-06-07      | closed        |
+|       126 |          4 | current     |         6954.3 | 2020-05-07      | open          |
+|       127 |          5 | current     |        16954.3 | 2020-03-07      | blocked       |
+|       128 |          6 | savings     |        36954.3 | 2020-05-27      | open          |
+|       129 |          7 | current     |        69554.3 | 2020-08-07      | open          |
+|       130 |          8 | current     |        12540.3 | 2020-11-07      | closed        |
+|       131 |          9 | savings     |        89614.3 | 2020-04-11      | open          |
+|       132 |         10 | savings     |        12367.3 | 2020-09-17      | blocked       |
++-----------+------------+-------------+----------------+-----------------+---------------+
+10 rows in set (0.02 sec)
+
+mysql> insert into TransactionInfo values(123,123,'D',14000,'2020-06-30');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> ^C
+mysql> insert into TransactionInfo values (1745,124,'D',1200,'2020-08-07');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into TransactionInfo values (1746,125,'D',70000,'2020-09-17');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into TransactionInfo values (1747,126,'D',1216,'2020-06-17');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into TransactionInfo values (1748,127,'D',12000,'2020-07-07');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into TransactionInfo values (1749,128,'D',19000,'2020-06-27');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into TransactionInfo values (1750,129,'D',19800,'2020-08-27');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into TransactionInfo values (1751,130,'D',17000,'2020-07-27');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into TransactionInfo values (1752,131,'D',59000,'2020-06-10');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into TransactionInfo values (1753,132,'D',1000,'2020-10-27');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from TransactionInfo;
++---------------+-----------+-----------------+--------+-----------------+
+| transactionid | accountid | transactiontype | amount | transactiondate |
++---------------+-----------+-----------------+--------+-----------------+
+|           123 |       123 | D               |  14000 | 2020-06-30      |
+|          1745 |       124 | D               |   1200 | 2020-08-07      |
+|          1746 |       125 | D               |  70000 | 2020-09-17      |
+|          1747 |       126 | D               |   1216 | 2020-06-17      |
+|          1748 |       127 | D               |  12000 | 2020-07-07      |
+|          1749 |       128 | D               |  19000 | 2020-06-27      |
+|          1750 |       129 | D               |  19800 | 2020-08-27      |
+|          1751 |       130 | D               |  17000 | 2020-07-27      |
+|          1752 |       131 | D               |  59000 | 2020-06-10      |
+|          1753 |       132 | D               |   1000 | 2020-10-27      |
++---------------+-----------+-----------------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> set @accountid=123;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from TransactionInfo where accountid=@accountid;
++---------------+-----------+-----------------+--------+-----------------+
+| transactionid | accountid | transactiontype | amount | transactiondate |
++---------------+-----------+-----------------+--------+-----------------+
+|           123 |       123 | D               |  14000 | 2020-06-30      |
++---------------+-----------+-----------------+--------+-----------------+
+1 row in set (0.16 sec)
+
+mysql> select * from TransactionInfo where accountid=@accountid and transactiondate between '2020-06-01' and '2020-06-30';
++---------------+-----------+-----------------+--------+-----------------+
+| transactionid | accountid | transactiontype | amount | transactiondate |
++---------------+-----------+-----------------+--------+-----------------+
+|           123 |       123 | D               |  14000 | 2020-06-30      |
++---------------+-----------+-----------------+--------+-----------------+
+1 row in set (0.17 sec)
+
+mysql> set @customerid=3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from AccountInfo where customerid=@customerid;
++-----------+------------+-------------+----------------+-----------------+---------------+
+| Accountid | customerid | accounttype | accountbalance | Accountopendate | accountstatus |
++-----------+------------+-------------+----------------+-----------------+---------------+
+|       125 |          3 | savings     |         236954 | 2020-06-07      | closed        |
++-----------+------------+-------------+----------------+-----------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select c.customerid,c.customername,c.customeraddress,c.customermobile,a.accountid,accountbalance from CustomerInfo c left outer join AccountInfo a on c.customerid=a.customerid;
++------------+--------------+-----------------+----------------+-----------+----------------+
+| customerid | customername | customeraddress | customermobile | accountid | accountbalance |
++------------+--------------+-----------------+----------------+-----------+----------------+
+|          1 | ak           | a nagar         |         963258 |       123 |        23695.3 |
+|          2 | bk           | b nagar         |         983258 |       124 |        33695.3 |
+|          3 | ck           | c nagar         |         973258 |       125 |         236954 |
+|          4 | dk           | d nagar         |         923258 |       126 |         6954.3 |
+|          5 | ek           | e nagar         |         763258 |       127 |        16954.3 |
+|          6 | fk           | f nagar         |         993258 |       128 |        36954.3 |
+|          7 | gk           | g nagar         |         863258 |       129 |        69554.3 |
+|          8 | hk           | h nagar         |         763858 |       130 |        12540.3 |
+|          9 | ik           | h nagar         |         763558 |       131 |        89614.3 |
+|         10 | jk           | j nagar         |         693858 |       132 |        12367.3 |
++------------+--------------+-----------------+----------------+-----------+----------------+
+10 rows in set (0.02 sec)
+
+mysql> select a.accountid,a.accountbalance,t.transactionid,t.amount,t.transactiontype from AccountInfo a join TransactionInfo t on a.accountid=t.accountid;
++-----------+----------------+---------------+--------+-----------------+
+| accountid | accountbalance | transactionid | amount | transactiontype |
++-----------+----------------+---------------+--------+-----------------+
+|       123 |        23695.3 |           123 |  14000 | D               |
+|       124 |        33695.3 |          1745 |   1200 | D               |
+|       125 |         236954 |          1746 |  70000 | D               |
+|       126 |         6954.3 |          1747 |   1216 | D               |
+|       127 |        16954.3 |          1748 |  12000 | D               |
+|       128 |        36954.3 |          1749 |  19000 | D               |
+|       129 |        69554.3 |          1750 |  19800 | D               |
+|       130 |        12540.3 |          1751 |  17000 | D               |
+|       131 |        89614.3 |          1752 |  59000 | D               |
+|       132 |        12367.3 |          1753 |   1000 | D               |
++-----------+----------------+---------------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select c.customerid,c.customername,c.customeraddress,c.customermobile,a.accountid,a.accountbalance,t.transactionid,t.amount,t.transactiontype
+    -> from CustomerInfo c left outer join AccountInfo a
+    -> on c.customerid=a.customerid
+    -> left outer join TransactionInfo t
+    -> on a.accountid=t.accountid;
++------------+--------------+-----------------+----------------+-----------+----------------+---------------+--------+-----------------+
+| customerid | customername | customeraddress | customermobile | accountid | accountbalance | transactionid | amount | transactiontype |
++------------+--------------+-----------------+----------------+-----------+----------------+---------------+--------+-----------------+
+|          1 | ak           | a nagar         |         963258 |       123 |        23695.3 |           123 |  14000 | D               |
+|          2 | bk           | b nagar         |         983258 |       124 |        33695.3 |          1745 |   1200 | D               |
+|          3 | ck           | c nagar         |         973258 |       125 |         236954 |          1746 |  70000 | D               |
+|          4 | dk           | d nagar         |         923258 |       126 |         6954.3 |          1747 |   1216 | D               |
+|          5 | ek           | e nagar         |         763258 |       127 |        16954.3 |          1748 |  12000 | D               |
+|          6 | fk           | f nagar         |         993258 |       128 |        36954.3 |          1749 |  19000 | D               |
+|          7 | gk           | g nagar         |         863258 |       129 |        69554.3 |          1750 |  19800 | D               |
+|          8 | hk           | h nagar         |         763858 |       130 |        12540.3 |          1751 |  17000 | D               |
+|          9 | ik           | h nagar         |         763558 |       131 |        89614.3 |          1752 |  59000 | D               |
+|         10 | jk           | j nagar         |         693858 |       132 |        12367.3 |          1753 |   1000 | D               |
++------------+--------------+-----------------+----------------+-----------+----------------+---------------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql>
